@@ -67,9 +67,10 @@ Butuh JDK 17+ dan Android SDK (lewat Android Studio atau `local.properties` yang
 ./gradlew :shared:compileKotlinIosSimulatorArm64
 ```
 
-APK debug hasil build ada di:
+APK debug hasil build ada di dua tempat (sama persis, beda nama file):
 ```
-androidApp/build/outputs/apk/debug/androidApp-debug.apk
+androidApp/build/outputs/apk/debug/androidApp-debug.apk        # nama default AGP
+androidApp/build/outputs/apk-named/debug/MindCare-<versi>-debug.apk  # salinan dengan nama rapi, ikut MINDCARE_VERSION_NAME
 ```
 
 Untuk iOS: buka folder [`/iosApp`](./iosApp) di Xcode dan run dari sana (perlu macOS).
@@ -84,6 +85,14 @@ Untuk iOS: buka folder [`/iosApp`](./iosApp) di Xcode dan run dari sana (perlu m
 ## Backend
 
 App ini mengonsumsi REST API (FastAPI, terpisah dari repo ini). Base URL diatur di `shared/src/commonMain/kotlin/com/example/mindcare/data/api/KtorClient.kt`.
+
+## Versioning
+
+Versi app disimpan di **satu sumber**: `gradle.properties` (`MINDCARE_VERSION_NAME` & `MINDCARE_VERSION_CODE`), dipakai otomatis oleh `androidApp/build.gradle.kts`.
+
+Untuk rilis baru:
+1. Bump `MINDCARE_VERSION_NAME` (semantic version, misal `1.0.0` → `1.1.0`) dan `MINDCARE_VERSION_CODE` (`+1`, harus selalu naik — dipakai Play Store untuk menentukan update mana yang lebih baru) di `gradle.properties`.
+2. Cerminkan nilai yang sama secara manual ke `iosApp/Configuration/Config.xcconfig` (`MARKETING_VERSION` = `MINDCARE_VERSION_NAME`, `CURRENT_PROJECT_VERSION` = `MINDCARE_VERSION_CODE`) — Xcode tidak baca file Gradle, jadi ini belum bisa otomatis tersinkron tanpa build-phase script tambahan di Xcode.
 
 ## App Icon
 

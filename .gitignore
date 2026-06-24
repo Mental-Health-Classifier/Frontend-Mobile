@@ -20,3 +20,9 @@ node_modules/
 
 # Claude Code local settings
 .claude/
+
+# Release signing — JANGAN pernah commit keystore/credential ini
+keystore/
+*.jks
+*.keystore
+keystore.properties
